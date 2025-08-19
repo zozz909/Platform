@@ -17,9 +17,9 @@ import StrategicOptionsSection from "./sections/strategic-options";
 import WhatsappIcon from "@/components/whatsapp-icon";
 
 const sections = [
-  { id: 1, name: "Financial Data", component: FinancialDataSection, fields: ['avgMonthlySales', 'annualSales', 'staffSalaries', 'rent', 'rawMaterials', 'bills', 'marketingCosts', 'franchiseFees'] },
-  { id: 2, name: "Operational Data", component: OperationalDataSection, fields: ['leaseContracts', 'employeeCount', 'branchAges', 'equipmentDetails', 'existingDebts'] },
-  { id: 3, name: "Strategic Options", component: StrategicOptionsSection, fields: ['strategicOption'] },
+  { id: 1, name: "البيانات المالية", component: FinancialDataSection, fields: ['avgMonthlySales', 'annualSales', 'staffSalaries', 'rent', 'rawMaterials', 'bills', 'marketingCosts', 'franchiseFees'] },
+  { id: 2, name: "البيانات التشغيلية", component: OperationalDataSection, fields: ['leaseContracts', 'employeeCount', 'branchAges', 'equipmentDetails', 'existingDebts'] },
+  { id: 3, name: "الخيارات الاستراتيجية", component: StrategicOptionsSection, fields: ['strategicOption'] },
 ];
 
 export default function Home() {
@@ -56,8 +56,8 @@ export default function Home() {
     } else {
         toast({
             variant: "destructive",
-            title: "Incomplete Section",
-            description: "Please fill out all required fields before proceeding.",
+            title: "قسم غير مكتمل",
+            description: "يرجى ملء جميع الحقول المطلوبة قبل المتابعة.",
         });
     }
   };
@@ -67,29 +67,35 @@ export default function Home() {
   };
   
   function onSubmit(data: z.infer<typeof formSchema>) {
+    const strategicOptionsMap = {
+      full_acquisition: "الاستحواذ الكامل",
+      partial_partnership: "الشراكة الجزئية",
+      selective_acquisition: "الاستحواذ الانتقائي"
+    };
+
     const formattedData = `
-*Golden Ratio Insights - New Client Data*
+*رؤى النسبة الذهبية - بيانات عميل جديد*
 -----------------------------------------
 
-*SECTION 1: FINANCIAL DATA*
-- *Average Monthly Sales:* ${data.avgMonthlySales}
-- *Annual Sales:* ${data.annualSales}
-- *Monthly Staff Salaries:* ${data.staffSalaries}
-- *Monthly Rent:* ${data.rent}
-- *Monthly Raw Materials Cost:* ${data.rawMaterials}
-- *Monthly Bills:* ${data.bills}
-- *Monthly Marketing Costs:* ${data.marketingCosts}
-- *Franchise Fees:* ${data.franchiseFees}
+*القسم الأول: البيانات المالية*
+- *متوسط المبيعات الشهرية:* ${data.avgMonthlySales}
+- *المبيعات السنوية:* ${data.annualSales}
+- *رواتب الموظفين الشهرية:* ${data.staffSalaries}
+- *الإيجار الشهري:* ${data.rent}
+- *تكلفة المواد الخام الشهرية:* ${data.rawMaterials}
+- *الفواتير الشهرية:* ${data.bills}
+- *تكاليف التسويق الشهرية:* ${data.marketingCosts}
+- *رسوم الامتياز:* ${data.franchiseFees}
 
-*SECTION 2: OPERATIONAL DATA*
-- *Lease Contracts Details:* ${data.leaseContracts}
-- *Number of Employees:* ${data.employeeCount}
-- *Branch Opening Dates:* ${data.branchAges?.toLocaleDateString()}
-- *Equipment Details:* ${data.equipmentDetails}
-- *Existing Debts/Commitments:* ${data.existingDebts}
+*القسم الثاني: البيانات التشغيلية*
+- *تفاصيل عقود الإيجار:* ${data.leaseContracts}
+- *عدد الموظفين:* ${data.employeeCount}
+- *تاريخ افتتاح الفرع:* ${data.branchAges?.toLocaleDateString('ar-SA')}
+- *تفاصيل المعدات:* ${data.equipmentDetails}
+- *الديون/الالتزامات الحالية:* ${data.existingDebts}
 
-*SECTION 3: STRATEGIC OPTIONS*
-- *Selected Option:* ${data.strategicOption.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+*القسم الثالث: الخيارات الاستراتيجية*
+- *الخيار المختار:* ${strategicOptionsMap[data.strategicOption]}
     `;
 
     const phoneNumber = "966568644169";
@@ -98,8 +104,8 @@ export default function Home() {
     window.open(whatsappUrl, '_blank');
 
     toast({
-        title: "Success!",
-        description: "Your data is being redirected to WhatsApp.",
+        title: "تم بنجاح!",
+        description: "يتم توجيه بياناتك إلى الواتساب.",
     });
   }
 
@@ -110,10 +116,10 @@ export default function Home() {
       <div className="w-full max-w-3xl mx-auto">
         <header className="text-center mb-8">
           <h1 className="text-4xl sm:text-5xl font-bold text-primary tracking-tight">
-            Golden Ratio Insights
+            رؤى النسبة الذهبية
           </h1>
           <p className="mt-2 text-lg text-muted-foreground">
-            Innovative Data Collection for Strategic Growth
+            جمع بيانات مبتكر للنمو الاستراتيجي
           </p>
         </header>
 
@@ -124,9 +130,9 @@ export default function Home() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={step}
-                initial={{ opacity: 0, x: 50 }}
+                initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
+                exit={{ opacity: 0, x: 50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="absolute w-full"
               >
@@ -143,11 +149,11 @@ export default function Home() {
               className={`transition-opacity duration-300 ${step === 1 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
               disabled={step === 1}
             >
-              Previous
+              السابق
             </Button>
             {step < sections.length ? (
               <Button type="button" onClick={handleNext}>
-                Next Step
+                الخطوة التالية
               </Button>
             ) : (
               <Button
@@ -155,8 +161,8 @@ export default function Home() {
                 onClick={form.handleSubmit(onSubmit)}
                 className="bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:scale-105"
               >
-                <WhatsappIcon className="w-5 h-5 mr-2" />
-                Send via WhatsApp 0568644169
+                <WhatsappIcon className="w-5 h-5 ml-2" />
+                إرسال عبر الواتساب 0568644169
               </Button>
             )}
           </div>

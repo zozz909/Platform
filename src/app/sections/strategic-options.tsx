@@ -17,20 +17,20 @@ const options = [
   {
     value: "full_acquisition",
     icon: <Gem className="w-8 h-8" />,
-    label: "Full Acquisition",
-    description: "Buy all branches and assume full management.",
+    label: "الاستحواذ الكامل",
+    description: "شراء كل الفروع وتولي إدارتها بالكامل.",
   },
   {
     value: "partial_partnership",
     icon: <Handshake className="w-8 h-8" />,
-    label: "Partial Partnership",
-    description: "Invest in a percentage (e.g., 50%) and share profit/loss without direct management.",
+    label: "الشراكة الجزئية",
+    description: "الاستثمار بنسبة معينة (مثلاً 50%) والمشاركة في الأرباح والخسائر بدون إدارة مباشرة.",
   },
   {
     value: "selective_acquisition",
     icon: <Target className="w-8 h-8" />,
-    label: "Selective Acquisition",
-    description: "Buy only profitable branches and restructure or close weaker ones.",
+    label: "الاستحواذ الانتقائي",
+    description: "شراء الفروع المربحة فقط وإعادة هيكلة أو إغلاق الفروع الأضعف.",
   },
 ] as const;
 
@@ -38,8 +38,8 @@ export default function StrategicOptionsSection({ form }: StrategicOptionsSectio
   return (
     <Card className="w-full border-primary/20 shadow-xl shadow-primary/5">
       <CardHeader>
-        <CardTitle className="text-2xl text-primary flex items-center gap-2"><CheckCircle2 /> Strategic Options</CardTitle>
-        <CardDescription>Select your preferred investment or acquisition strategy.</CardDescription>
+        <CardTitle className="text-2xl text-primary flex items-center gap-2"><CheckCircle2 /> الخيارات الاستراتيجية</CardTitle>
+        <CardDescription>اختر استراتيجية الاستثمار أو الاستحواذ المفضلة لديك.</CardDescription>
       </CardHeader>
       <CardContent>
         <FormField

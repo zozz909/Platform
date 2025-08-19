@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { arSA } from "date-fns/locale";
 import { formSchema } from "../form-schema";
 
 interface OperationalDataSectionProps {
@@ -22,8 +23,8 @@ export default function OperationalDataSection({ form }: OperationalDataSectionP
   return (
     <Card className="w-full border-primary/20 shadow-xl shadow-primary/5">
       <CardHeader>
-        <CardTitle className="text-2xl text-primary flex items-center gap-2"><Wrench /> Operational Data</CardTitle>
-        <CardDescription>Detail the operational aspects of the branches.</CardDescription>
+        <CardTitle className="text-2xl text-primary flex items-center gap-2"><Wrench /> البيانات التشغيلية</CardTitle>
+        <CardDescription>تفاصيل الجوانب التشغيلية للفروع.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <FormField
@@ -31,9 +32,9 @@ export default function OperationalDataSection({ form }: OperationalDataSectionP
           name="leaseContracts"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="flex items-center gap-2 text-base"><FileText className="text-primary/80" /> Lease Contracts</FormLabel>
+              <FormLabel className="flex items-center gap-2 text-base"><FileText className="text-primary/80" /> عقود الإيجار</FormLabel>
               <FormControl>
-                <Textarea placeholder="Remaining duration, renewal terms, annual increases..." {...field} className="h-24 text-base"/>
+                <Textarea placeholder="المدة المتبقية، شروط التجديد، الزيادات السنوية..." {...field} className="h-24 text-base"/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -45,9 +46,9 @@ export default function OperationalDataSection({ form }: OperationalDataSectionP
             name="employeeCount"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="flex items-center gap-2 text-base"><Users className="text-primary/80" /> Number of Employees</FormLabel>
+                <FormLabel className="flex items-center gap-2 text-base"><Users className="text-primary/80" /> عدد الموظفين</FormLabel>
                 <FormControl>
-                  <Input placeholder="e.g., 10 per branch" {...field} className="text-base py-6" />
+                  <Input placeholder="مثال: 10 لكل فرع" {...field} className="text-base py-6" />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -58,23 +59,23 @@ export default function OperationalDataSection({ form }: OperationalDataSectionP
             name="branchAges"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel className="flex items-center gap-2 text-base mt-0.5"><CalendarDays className="text-primary/80" /> Branch Opening Date</FormLabel>
+                <FormLabel className="flex items-center gap-2 text-base mt-0.5"><CalendarDays className="text-primary/80" /> تاريخ افتتاح الفرع</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-full text-left font-normal h-auto text-base py-3",
+                          "w-full text-right font-normal h-auto text-base py-3",
                           !field.value && "text-muted-foreground"
                         )}
                       >
                         {field.value ? (
-                          format(field.value, "PPP")
+                          format(field.value, "PPP", { locale: arSA })
                         ) : (
-                          <span>Pick a date</span>
+                          <span>اختر تاريخًا</span>
                         )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        <CalendarIcon className="mr-auto h-4 w-4 opacity-50" />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
@@ -87,6 +88,7 @@ export default function OperationalDataSection({ form }: OperationalDataSectionP
                         date > new Date() || date < new Date("1900-01-01")
                       }
                       initialFocus
+                      locale={arSA}
                     />
                   </PopoverContent>
                 </Popover>
@@ -100,9 +102,9 @@ export default function OperationalDataSection({ form }: OperationalDataSectionP
           name="equipmentDetails"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="flex items-center gap-2 text-base"><Wrench className="text-primary/80" /> Equipment Details</FormLabel>
+              <FormLabel className="flex items-center gap-2 text-base"><Wrench className="text-primary/80" /> التجهيزات والمعدات</FormLabel>
               <FormControl>
-                <Textarea placeholder="Owned or leased? Condition..." {...field} className="h-24 text-base"/>
+                <Textarea placeholder="مملوكة أم مؤجرة؟ حالتها..." {...field} className="h-24 text-base"/>
               </FormControl>
                <FormMessage />
             </FormItem>
@@ -113,9 +115,9 @@ export default function OperationalDataSection({ form }: OperationalDataSectionP
           name="existingDebts"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="flex items-center gap-2 text-base"><CreditCard className="text-primary/80" /> Existing Debts or Financial Commitments</FormLabel>
+              <FormLabel className="flex items-center gap-2 text-base"><CreditCard className="text-primary/80" /> المديونيات أو الالتزامات المالية القائمة</FormLabel>
               <FormControl>
-                <Textarea placeholder="Loans, supplier dues, etc." {...field} className="h-24 text-base"/>
+                <Textarea placeholder="قروض، مستحقات للموردين، إلخ." {...field} className="h-24 text-base"/>
               </FormControl>
               <FormMessage />
             </FormItem>
