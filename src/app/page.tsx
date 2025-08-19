@@ -14,11 +14,12 @@ import FormStepper from "@/components/form-stepper";
 import BranchesSection from "./sections/branches-section";
 import StrategicOptionsSection from "./sections/strategic-options";
 import WhatsappIcon from "@/components/whatsapp-icon";
-import { PlusCircle } from "lucide-react";
+import BranchCountSection from "./sections/branch-count-section";
 
 const sections = [
-  { id: 1, name: "بيانات الفروع", component: BranchesSection, fields: ['branches'] },
-  { id: 2, name: "الخيارات الاستراتيجية", component: StrategicOptionsSection, fields: ['strategicOption'] },
+  { id: 1, name: "عدد الفروع", component: BranchCountSection, fields: ['branchCount'] },
+  { id: 2, name: "بيانات الفروع", component: BranchesSection, fields: ['branches'] },
+  { id: 3, name: "الخيارات الاستراتيجية", component: StrategicOptionsSection, fields: ['strategicOption'] },
 ];
 
 export default function Home() {
@@ -28,10 +29,29 @@ export default function Home() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      branches: [
-        {
+      branchCount: 1,
+      branches: [],
+      strategicOption: "full_acquisition",
+    },
+  });
+
+  const { fields, append, remove, replace } = useFieldArray({
+    control: form.control,
+    name: "branches",
+  });
+
+  const { trigger, getValues } = form;
+
+  const handleNext = async () => {
+    const currentSectionFields = sections.find(s => s.id === step)?.fields as (keyof z.infer<typeof formSchema>)[];
+    const isValid = await trigger(currentSectionFields);
+    
+    if (isValid) {
+      if (step === 1) { // After setting branch count
+        const branchCount = getValues("branchCount");
+        const newBranches = Array.from({ length: branchCount }, (_, i) => ({
           id: `branch-${Math.random()}`,
-          name: "الفرع الرئيسي",
+          name: `الفرع ${i + 1}`,
           avgMonthlySales: "",
           annualSales: "",
           staffSalaries: "",
@@ -45,32 +65,15 @@ export default function Home() {
           branchAges: undefined,
           equipmentDetails: "",
           existingDebts: "",
-        },
-      ],
-      strategicOption: "full_acquisition",
-    },
-  });
-
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "branches",
-  });
-
-  const { trigger } = form;
-
-  const handleNext = async () => {
-    const currentSectionFields = sections.find(s => s.id === step)?.fields as (keyof z.infer<typeof formSchema>)[];
-    const isValid = await trigger(currentSectionFields);
-    
-    if (isValid) {
+        }));
+        replace(newBranches);
+      }
       setStep((prev) => Math.min(prev + 1, sections.length));
     } else {
-      // It's better to show specific errors in the form fields.
-      // However, a general toast can be a fallback.
       toast({
           variant: "destructive",
-          title: "قسم غير مكتمل",
-          description: "يرجى ملء جميع الحقول المطلوبة في كل الفروع قبل المتابعة.",
+          title: "حقل غير صحيح",
+          description: "يرجى إدخال عدد فروع صحيح للمتابعة.",
       });
     }
   };
@@ -157,16 +160,7 @@ ${branchesData}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
                 className="absolute w-full"
               >
-                {step === 1 ? (
-                  <BranchesSection 
-                    form={form} 
-                    fields={fields}
-                    append={append}
-                    remove={remove}
-                  />
-                ) : (
-                  <CurrentSection form={form} />
-                )}
+                 <CurrentSection form={form} fields={fields} remove={remove} />
               </motion.div>
             </AnimatePresence>
           </form>
