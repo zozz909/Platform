@@ -26,9 +26,4 @@ const branchSchema = z.object({
 export const formSchema = z.object({
   branchCount: z.number().min(1, "يجب تحديد عدد الفروع.").max(50, "الحد الأقصى 50 فرع."),
   branches: z.array(branchSchema).min(1, "يجب إضافة فرع واحد على الأقل."),
-  
-  // Strategic Options
-  strategicOption: z.enum(["full_acquisition", "partial_partnership", "selective_acquisition"], {
-    required_error: "يجب عليك اختيار خيار استراتيجي.",
-  }),
 });

@@ -12,14 +12,12 @@ import { useToast } from "@/hooks/use-toast";
 import { formSchema } from "./form-schema";
 import FormStepper from "@/components/form-stepper";
 import BranchesSection from "./sections/branches-section";
-import StrategicOptionsSection from "./sections/strategic-options";
 import WhatsappIcon from "@/components/whatsapp-icon";
 import BranchCountSection from "./sections/branch-count-section";
 
 const sections = [
   { id: 1, name: "عدد الفروع", component: BranchCountSection, fields: ['branchCount'] },
   { id: 2, name: "بيانات الفروع", component: BranchesSection, fields: ['branches'] },
-  { id: 3, name: "الخيارات الاستراتيجية", component: StrategicOptionsSection, fields: ['strategicOption'] },
 ];
 
 export default function Home() {
@@ -31,11 +29,10 @@ export default function Home() {
     defaultValues: {
       branchCount: 1,
       branches: [],
-      strategicOption: "full_acquisition",
     },
   });
 
-  const { fields, append, remove, replace } = useFieldArray({
+  const { fields, remove, replace } = useFieldArray({
     control: form.control,
     name: "branches",
   });
@@ -51,7 +48,7 @@ export default function Home() {
         const branchCount = getValues("branchCount");
         const newBranches = Array.from({ length: branchCount }, (_, i) => ({
           id: `branch-${Math.random()}`,
-          name: `الفرع ${i + 1}`,
+          name: i === 0 ? "الفرع الرئيسي" : `الفرع ${i + 1}`,
           avgMonthlySales: "",
           annualSales: "",
           staffSalaries: "",
@@ -83,14 +80,8 @@ export default function Home() {
   };
   
   function onSubmit(data: z.infer<typeof formSchema>) {
-    const strategicOptionsMap = {
-      full_acquisition: "الاستحواذ الكامل",
-      partial_partnership: "الشراكة الجزئية",
-      selective_acquisition: "الاستحواذ الانتقائي"
-    };
-
     let branchesData = data.branches.map((branch, index) => `
-*الفرع ${index + 1}: ${branch.name}*
+*${branch.name}*
 --------------------------
 *البيانات المالية:*
 - متوسط المبيعات الشهرية: ${branch.avgMonthlySales}
@@ -116,10 +107,6 @@ export default function Home() {
 =========================================
 
 ${branchesData}
-
-=========================================
-*القسم الأخير: الخيارات الاستراتيجية*
-- *الخيار المختار:* ${strategicOptionsMap[data.strategicOption]}
     `;
 
     const phoneNumber = "966568644169";
