@@ -38,41 +38,43 @@ export default function BranchesSection({ form, fields, remove }: BranchesSectio
         <Accordion type="single" collapsible className="w-full" defaultValue={fields[0]?.id}>
           {fields.map((field, index) => (
             <AccordionItem value={field.id || `item-${index}`} key={field.id}>
-              <AccordionTrigger className="flex justify-between">
-                <div className="flex-grow text-right">
-                  <FormField
-                    control={form.control}
-                    name={`branches.${index}.name`}
-                    render={({ field }) => (
-                      <FormItem className="w-full max-w-sm">
-                        <FormControl>
-                          <Input 
-                            {...field}
-                            onClick={(e) => e.stopPropagation()} 
-                            placeholder="اسم الفرع"
-                            className="text-lg font-semibold border-0 bg-transparent p-0 h-auto focus-visible:ring-0" 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                {fields.length > 1 && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        remove(index)
-                    }}
-                    className="mr-auto text-destructive hover:text-destructive hover:bg-destructive/10"
-                  >
-                    <Trash2 className="h-5 w-5" />
-                  </Button>
-                )}
-              </AccordionTrigger>
+              <div className="flex items-center justify-between w-full">
+                <AccordionTrigger className="flex-grow">
+                  <div className="flex-grow text-right">
+                    <FormField
+                      control={form.control}
+                      name={`branches.${index}.name`}
+                      render={({ field }) => (
+                        <FormItem className="w-full max-w-sm">
+                          <FormControl>
+                            <Input 
+                              {...field}
+                              onClick={(e) => e.stopPropagation()} 
+                              placeholder="اسم الفرع"
+                              className="text-lg font-semibold border-0 bg-transparent p-0 h-auto focus-visible:ring-0" 
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </AccordionTrigger>
+                 {fields.length > 1 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={(e) => {
+                          e.stopPropagation();
+                          remove(index)
+                      }}
+                      className="mr-auto text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0 ml-2"
+                    >
+                      <Trash2 className="h-5 w-5" />
+                    </Button>
+                  )}
+              </div>
               <AccordionContent className="pt-4">
                   <FinancialDataSection form={form} branchIndex={index} />
                   <Separator className="my-8" />
