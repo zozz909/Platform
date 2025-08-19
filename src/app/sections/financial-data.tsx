@@ -10,6 +10,7 @@ import { formSchema } from "../form-schema";
 
 interface FinancialDataSectionProps {
   form: UseFormReturn<z.infer<typeof formSchema>>;
+  branchIndex: number;
 }
 
 const financialFields = [
@@ -23,25 +24,24 @@ const financialFields = [
   { name: "franchiseFees", label: "رسوم الفرنشايز", icon: <Percent className="text-primary/80" />, placeholder: "مثال: 5% من المبيعات أو 1,000 ريال" },
 ] as const;
 
-export default function FinancialDataSection({ form }: FinancialDataSectionProps) {
+export default function FinancialDataSection({ form, branchIndex }: FinancialDataSectionProps) {
   return (
-    <Card className="w-full border-primary/20 shadow-xl shadow-primary/5">
-      <CardHeader>
-        <CardTitle className="text-2xl text-primary flex items-center gap-2"><DollarSign /> البيانات المالية</CardTitle>
-        <CardDescription>قدم لمحة عامة عن الأداء المالي لكل فرع.</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <>
+        <CardHeader className="p-0 mb-6">
+            <CardTitle className="text-xl text-primary flex items-center gap-2"><DollarSign /> البيانات المالية</CardTitle>
+            <CardDescription>الأداء المالي للفرع.</CardDescription>
+        </CardHeader>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {financialFields.map(item => (
             <FormField
               key={item.name}
               control={form.control}
-              name={item.name}
+              name={`branches.${branchIndex}.${item.name}`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="flex items-center gap-2 text-base">{item.icon} {item.label}</FormLabel>
+                  <FormLabel className="flex items-center gap-2">{item.icon} {item.label}</FormLabel>
                   <FormControl>
-                    <Input placeholder={item.placeholder} {...field} className="text-base py-6" />
+                    <Input placeholder={item.placeholder} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -49,7 +49,6 @@ export default function FinancialDataSection({ form }: FinancialDataSectionProps
             />
           ))}
         </div>
-      </CardContent>
-    </Card>
+    </>
   );
 }

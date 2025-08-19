@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-export const formSchema = z.object({
+const branchSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().min(1, "اسم الفرع مطلوب."),
   // Financial Data
   avgMonthlySales: z.string().min(1, "متوسط المبيعات الشهرية مطلوب."),
   annualSales: z.string().min(1, "المبيعات السنوية مطلوبة."),
@@ -19,7 +21,11 @@ export const formSchema = z.object({
   }),
   equipmentDetails: z.string().min(1, "تفاصيل المعدات مطلوبة."),
   existingDebts: z.string().min(1, "هذا الحقل مطلوب."),
+});
 
+export const formSchema = z.object({
+  branches: z.array(branchSchema).min(1, "يجب إضافة فرع واحد على الأقل."),
+  
   // Strategic Options
   strategicOption: z.enum(["full_acquisition", "partial_partnership", "selective_acquisition"], {
     required_error: "يجب عليك اختيار خيار استراتيجي.",
