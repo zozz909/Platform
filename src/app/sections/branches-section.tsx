@@ -20,12 +20,21 @@ interface BranchesSectionProps {
   form: UseFormReturn<z.infer<typeof formSchema>>;
   fields: UseFieldArrayReturn<z.infer<typeof formSchema>, "branches", "id">['fields'];
   remove: UseFieldArrayReturn<z.infer<typeof formSchema>, "branches", "id">['remove'];
+  navigation: React.ReactNode;
 }
 
-export default function BranchesSection({ form, fields, remove }: BranchesSectionProps) {
+export default function BranchesSection({ form, fields, remove, navigation }: BranchesSectionProps) {
 
   if (fields.length === 0) {
-    return null;
+    return (
+        <Card className="w-full border-primary/20 shadow-xl shadow-primary/5">
+            <CardHeader>
+                <CardTitle className="text-2xl text-primary flex items-center gap-2"><Store /> بيانات الفروع</CardTitle>
+                <CardDescription>الرجاء العودة وتحديد عدد الفروع.</CardDescription>
+            </CardHeader>
+            {navigation}
+        </Card>
+    );
   }
 
   return (
@@ -94,6 +103,7 @@ export default function BranchesSection({ form, fields, remove }: BranchesSectio
           />
         </div>
       </CardContent>
+      {navigation}
     </Card>
   );
 }

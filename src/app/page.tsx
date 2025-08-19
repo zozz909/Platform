@@ -14,6 +14,7 @@ import FormStepper from "@/components/form-stepper";
 import BranchesSection from "./sections/branches-section";
 import WhatsappIcon from "@/components/whatsapp-icon";
 import BranchCountSection from "./sections/branch-count-section";
+import { CardFooter } from "@/components/ui/card";
 
 const sections = [
   { id: 1, name: "عدد الفروع", component: BranchCountSection, fields: ['branchCount'] },
@@ -120,6 +121,34 @@ ${branchesData}
     });
   }
 
+  const navigationButtons = (
+    <CardFooter className="flex justify-between items-center mt-8 pt-4">
+        <Button
+            type="button"
+            variant="secondary"
+            onClick={handlePrev}
+            className={`transition-opacity duration-300 ${step === 1 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+            disabled={step === 1}
+        >
+            السابق
+        </Button>
+        {step < sections.length ? (
+            <Button type="button" onClick={handleNext}>
+            الخطوة التالية
+            </Button>
+        ) : (
+            <Button
+            type="button"
+            onClick={form.handleSubmit(onSubmit)}
+            className="bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:scale-105"
+            >
+            <WhatsappIcon className="w-5 h-5 ml-2" />
+            إرسال عبر الواتساب 0568644169
+            </Button>
+        )}
+    </CardFooter>
+  );
+
   const CurrentSection = sections[step - 1].component;
 
   return (
@@ -137,7 +166,7 @@ ${branchesData}
         <FormStepper currentStep={step} steps={sections.map(s => s.name)} />
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 relative min-h-[600px]">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 relative">
             <AnimatePresence mode="wait">
               <motion.div
                 key={step}
@@ -145,38 +174,13 @@ ${branchesData}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 50 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="absolute w-full"
+                className="w-full"
               >
-                 <CurrentSection form={form} fields={fields} remove={remove} />
+                 <CurrentSection form={form} fields={fields} remove={remove} navigation={navigationButtons} />
               </motion.div>
             </AnimatePresence>
           </form>
         </Form>
-         <div className="flex justify-between items-center mt-8 pt-4">
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={handlePrev}
-              className={`transition-opacity duration-300 ${step === 1 ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
-              disabled={step === 1}
-            >
-              السابق
-            </Button>
-            {step < sections.length ? (
-              <Button type="button" onClick={handleNext}>
-                الخطوة التالية
-              </Button>
-            ) : (
-              <Button
-                type="button"
-                onClick={form.handleSubmit(onSubmit)}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:scale-105"
-              >
-                <WhatsappIcon className="w-5 h-5 ml-2" />
-                إرسال عبر الواتساب 0568644169
-              </Button>
-            )}
-          </div>
       </div>
     </main>
   );

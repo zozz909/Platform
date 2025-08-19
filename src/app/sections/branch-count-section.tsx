@@ -11,9 +11,10 @@ import { formSchema } from "../form-schema";
 
 interface BranchCountSectionProps {
   form: UseFormReturn<z.infer<typeof formSchema>>;
+  navigation: React.ReactNode;
 }
 
-export default function BranchCountSection({ form }: BranchCountSectionProps) {
+export default function BranchCountSection({ form, navigation }: BranchCountSectionProps) {
   return (
     <Card className="w-full max-w-lg mx-auto border-primary/20 shadow-xl shadow-primary/5">
       <CardHeader>
@@ -41,6 +42,7 @@ export default function BranchCountSection({ form }: BranchCountSectionProps) {
           )}
         />
       </CardContent>
+      {navigation}
     </Card>
   );
 }
