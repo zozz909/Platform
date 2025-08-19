@@ -45,9 +45,10 @@ export default function Home() {
     const isValid = await trigger(currentSectionFields);
     
     if (isValid) {
-      if (step === 1) { // After setting branch count
+      if (step === 1) {
         const branchCount = getValues("branchCount");
         const currentBranches = getValues("branches");
+        
         const newBranches = Array.from({ length: branchCount }, (_, i) => {
           return (
             currentBranches[i] || {
@@ -122,7 +123,7 @@ ${branchesData}
 
     toast({
         title: "تم بنجاح!",
-        description: "يتم توجيه بياناتك إلى الواتساب.",
+        description: "يتم الآن توجيهك إلى واتساب لإرسال البيانات.",
     });
   }
 
@@ -145,10 +146,10 @@ ${branchesData}
             <Button
             type="button"
             onClick={form.handleSubmit(onSubmit)}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:scale-105"
+            className="bg-green-500 text-white hover:bg-green-600 hover:shadow-lg hover:shadow-green-500/30 transition-all duration-300 transform hover:scale-105"
             >
             <WhatsappIcon className="w-5 h-5 ml-2" />
-            إرسال البيانات عبر الواتساب
+            إرسال عبر واتساب
             </Button>
         )}
     </CardFooter>
@@ -159,13 +160,10 @@ ${branchesData}
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 bg-background">
       <div className="w-full max-w-4xl mx-auto">
-        <header className="text-center mb-8">
+        <header className="text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-bold text-primary tracking-tight">
             دراسة علامة دارة القهوة
           </h1>
-          <p className="mt-2 text-lg text-muted-foreground">
-            
-          </p>
         </header>
 
         <FormStepper currentStep={step} steps={sections.map(s => s.name)} />
