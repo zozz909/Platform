@@ -47,31 +47,36 @@ export default function Home() {
     if (isValid) {
       if (step === 1) { // After setting branch count
         const branchCount = getValues("branchCount");
-        const newBranches = Array.from({ length: branchCount }, (_, i) => ({
-          id: `branch-${Math.random()}`,
-          name: i === 0 ? "الفرع الرئيسي" : `الفرع ${i + 1}`,
-          avgMonthlySales: "",
-          annualSales: "",
-          staffSalaries: "",
-          rent: "",
-          rawMaterials: "",
-          bills: "",
-          marketingCosts: "",
-          franchiseFees: "",
-          leaseContracts: "",
-          employeeCount: "",
-          branchAges: undefined,
-          equipmentDetails: "",
-          existingDebts: "",
-        }));
+        const currentBranches = getValues("branches");
+        const newBranches = Array.from({ length: branchCount }, (_, i) => {
+          return (
+            currentBranches[i] || {
+              id: `branch-${Date.now()}-${i}`,
+              name: i === 0 ? "الفرع الرئيسي" : `الفرع ${i + 1}`,
+              avgMonthlySales: "",
+              annualSales: "",
+              staffSalaries: "",
+              rent: "",
+              rawMaterials: "",
+              bills: "",
+              marketingCosts: "",
+              franchiseFees: "",
+              leaseContracts: "",
+              employeeCount: "",
+              branchAges: undefined,
+              equipmentDetails: "",
+              existingDebts: "لا يوجد",
+            }
+          );
+        });
         replace(newBranches);
       }
       setStep((prev) => Math.min(prev + 1, sections.length));
     } else {
       toast({
           variant: "destructive",
-          title: "حقل غير صحيح",
-          description: "يرجى إدخال عدد فروع صحيح للمتابعة.",
+          title: "حقول مطلوبة",
+          description: "الرجاء التأكد من تعبئة جميع الحقول بشكل صحيح.",
       });
     }
   };
@@ -97,14 +102,14 @@ export default function Home() {
 *البيانات التشغيلية:*
 - عقود الإيجار: ${branch.leaseContracts}
 - عدد الموظفين: ${branch.employeeCount}
-- تاريخ الافتتاح: ${branch.branchAges?.toLocaleDateString('ar-SA')}
+- تاريخ الافتتاح: ${branch.branchAges ? branch.branchAges.toLocaleDateString('ar-SA') : 'غير محدد'}
 - التجهيزات والمعدات: ${branch.equipmentDetails}
 - المديونيات الحالية: ${branch.existingDebts}
 `).join('\n\n');
 
 
     const formattedData = `
-*رؤى النسبة الذهبية - بيانات عميل جديد*
+*دراسة علامة دارة القهوة - بيانات عميل جديد*
 =========================================
 
 ${branchesData}
@@ -143,7 +148,7 @@ ${branchesData}
             className="bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 transform hover:scale-105"
             >
             <WhatsappIcon className="w-5 h-5 ml-2" />
-            إرسال عبر الواتساب 0568644169
+            إرسال البيانات عبر الواتساب
             </Button>
         )}
     </CardFooter>
@@ -156,10 +161,10 @@ ${branchesData}
       <div className="w-full max-w-4xl mx-auto">
         <header className="text-center mb-8">
           <h1 className="text-4xl sm:text-5xl font-bold text-primary tracking-tight">
-            رؤى النسبة الذهبية
+            دراسة علامة دارة القهوة
           </h1>
           <p className="mt-2 text-lg text-muted-foreground">
-            جمع بيانات مبتكر للنمو الاستراتيجي
+            
           </p>
         </header>
 

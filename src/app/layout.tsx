@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'رؤى النسبة الذهبية',
-  description: 'منصة ويب فاخرة ومبتكرة لجمع بيانات العملاء.',
+  title: 'دراسة علامة دارة القهوة',
+  description: '',
 };
 
 export default function RootLayout({

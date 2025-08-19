@@ -25,6 +25,14 @@ interface BranchesSectionProps {
 
 export default function BranchesSection({ form, fields, remove, navigation }: BranchesSectionProps) {
 
+  const handleRemoveBranch = (index: number) => {
+    const currentBranchCount = form.getValues("branchCount");
+    if (currentBranchCount > 1) {
+      form.setValue("branchCount", currentBranchCount - 1, { shouldValidate: true });
+    }
+    remove(index);
+  }
+
   if (fields.length === 0) {
     return (
         <Card className="w-full border-primary/20 shadow-xl shadow-primary/5">
@@ -76,7 +84,7 @@ export default function BranchesSection({ form, fields, remove, navigation }: Br
                       size="icon"
                       onClick={(e) => {
                           e.stopPropagation();
-                          remove(index)
+                          handleRemoveBranch(index)
                       }}
                       className="mr-auto text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0 ml-2"
                     >
